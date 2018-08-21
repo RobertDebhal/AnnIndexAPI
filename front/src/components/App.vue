@@ -1,14 +1,22 @@
 <template>
   <div id="app">
-    <router-link :to="{ name: 'AnnoyIndexes' }">Annoy Indexes</router-link>
-    <router-link :to="{ name: 'AnnoyIndexesExplorer' }">Annoy Indexes Explorer</router-link>
-    <router-view></router-view>
+  <SideNav />
+  <TopBar />
+  <router-view></router-view>
+
   </div>
 </template>
 
 <script>
+import SideNav from './SideNav.vue'
+import TopBar from './TopBar.vue'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    SideNav,
+    TopBar
+  }
 }
 </script>
 
@@ -17,8 +25,11 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
+body {
+  margin: 0;
+}
+
 </style>

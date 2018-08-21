@@ -1,30 +1,21 @@
 <template>
-<div class="container">
-
-    <h1> ANNoy Indexes Explorer </h1>
+<div class="main">
 
     <section>
-
-        <div class="row">
-            <h2> User fast lookup </h2>
-         </div>
-
-         <user-identification
-             v-on:user-id="setUserId"
-         ></user-identification>
-
-         <div class="row">
-            <h2> Source vector </h2>
-         </div>
-
-        <div class="row">
-            <div class="col-md-2">
+        <div class="sub_container">
+        <div class="row center">
+            <div class="header">
+                <p> Source vector </p>
+            </div>
+        </div>
+        <div class="row center">
+            <!-- <div class="col-md-2">
                 <label for="banner"> banner </label>
                 <select id="banner" v-model="banner" class="form-control">
                     <option disabled value="gilt"> Gilt </option>
                 </select>
-            </div>
-            <div class="col-md-2">
+            </div> -->
+            <div class="col-md-3">
                 <label for="model"> model </label>
                 <select id="model" v-model="model" class="form-control">
                     <option disabled value="">Please select one</option>
@@ -42,43 +33,55 @@
                     </template>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label for="index_key"> vector key </label>
                 <input id="index_key" v-model="index_key" @keyup.enter="getAnnoyVector" class="form-control" type="text">
             </div>
-            <div class="col-md-2">
-                <label for="fast_update"> fast update </label>
-                <input type="checkbox" id="fast_update" v-model="fast_update" class="form-control" title="If checked it will be populated automatically with looked up user or product id">
-            </div>
-            <div class="col-md-1">
-                <button @click="getAnnoyVector"> Go! </button>
+            
+            <div class="col-md-2" id="go">
+                <div class="row center">
+                    <div>
+                        <label for="fast_update_checkbox">fast update</label>
+                        <input id="fast_update_checkbox" type="checkbox" v-model="fast_update" class="form-control" title="If checked it will be populated automatically with looked up user or product id">
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <button id="button" @click="getAnnoyVector"> Go! </button>
+                </div>
             </div>
         </div>
+        </div>
+    <div class="sub_container">           
+
 
         <div class="row">
             <hr>
         </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <label for="index_vector"> vector </label>
-                <textarea id="index_vector" v-model="index_vector" class="form-control" placeholder="index vector" rows="5" disabled></textarea>
+        
+        <div class="row center">
+                <div class="header">
+                    <p> Index Vector </p>
+                </div>
+                <textarea  id="index_vector" v-model="index_vector" class="form-control" placeholder="index vector" rows="5" disabled></textarea>
             </div>
-        </div>
-
+    </div>
     </section>
 
-    <template v-if="index_vector.length > 0">
 
+ <template v-if="index_vector.length > 0"> 
+     <div class="sub_container">
         <div class="row">
             <hr>
         </div>
 
-        <div class="row">
-            <h2> Target index </h2>
-         </div>
+        <div class="row center">
+            <div class="header">
+                <p> Target index </p>
+            </div>
+        </div>
 
-        <div class="row">
+        <div class="row center">
             <div class="col-md-3">
                  <label for="index_target"> annoy index </label>
                  <select id="index_target" v-model="index_target" class="form-control">
@@ -99,11 +102,11 @@
                      <option v-for="type in neighbor_types"> {{type}} </option>
                  </select>
              </div>
-             <div class="col-md-3">
+             <div class="col-md-2" id="bottom_button">
                  <button @click="findNeighbors" :disabled="index_target.trim().length == 0"> Go! </button>
              </div>
          </div>
-
+     </div>
     </template>
 
     <template v-if="neighbors.length > 0">
@@ -118,8 +121,7 @@
 
         <div class="row" v-if="show_raw_neighbors">
             <ul>
-                <!-- <li v-for="neighbor in neighbors"> {{ neighbor }}</li> -->
-                <li>{{neighbors}}</li>
+                <li v-for="neighbor in neighbors"> {{ neighbor }}</li>
             </ul>
         </div>
 
@@ -192,6 +194,7 @@
     </template>
 
 </div>
+
 </template>
 
 <script>
@@ -354,7 +357,13 @@ export default {
     }
   },
   created: function () {
-  },
+        let vm = this
+        axios
+            .get('/ann_indexes')
+            .then(function(response) {
+                vm.indexes = response.data
+            })
+    },
   filters: {
     giltProductImage: function (value) {
       return 'https://www.gilt.com' + value
@@ -362,3 +371,131 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+input[type="checkbox"] {
+  height: auto;
+  width: auto;
+  margin: 5px 5px 5px 5px;
+}
+
+#fast_update {
+    display:block;
+}
+
+#fast_update span {
+    float:left;
+    margin-left: 10px;
+}
+
+.center {
+    margin: auto;
+    text-align: center;
+    padding-top: 5px;
+    width: 90%;
+}
+
+.center div {
+    margin: auto;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.center div button{
+    margin: auto;
+    text-align: center;
+    width: 200px;
+}
+
+.center h2{
+    margin: auto;
+    text-align: center;
+    
+}
+
+.left {
+    margin: auto;
+    text-align: left;
+    padding: 5px 0 0 5px;
+}
+
+.sub_container {
+  border: 1px solid #ddd;
+  padding: 0px 20px 20px 20px;
+  border-radius: 5px;
+  margin: 20px 20px 0px 20px;
+  background-color: white;
+  min-height: 300px;
+  overflow: scroll; 
+  background: rgb(253,253,253);
+}
+
+.header {
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size:22px;
+    font-weight:300;
+    color: rgb(51, 51, 51);
+    float:left;
+    padding-top:10px;
+}
+
+.header p {
+    border-bottom-color: rgba(0, 0, 0);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.top_header {
+  height: 55px;
+  width: 100%;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 200;
+}
+
+.top_header p {
+    float: left;
+    padding: 19px 16px;
+}
+
+.top_row {
+    border-top: 1px solid #ddd;
+}
+
+.main {
+  height: 1276px;
+  margin-left: 240px; /* Same as the width of the sidebar */ 
+}
+
+#go {
+    margin: 0;
+}
+
+#go input {
+    float: right;
+}
+
+#go label {
+    padding-bottom: 5px;
+    margin: auto;
+}
+
+#bottom_button {
+    margin-bottom: 0;
+}
+
+#index_vector {
+    height: 200px;
+    margin-bottom: 50px;
+    background: linear-gradient(to bottom right, #F5F5F5 0%, rgb(241, 241, 241) 100%);
+}
+
+select {
+    background: linear-gradient(to bottom, #F5F5F5 0%, #E8E8E8 100%);
+}
+
+input[type="text"], input[type="number"] {
+    background: linear-gradient(to bottom, #F5F5F5 0%, #E8E8E8 100%);
+}
+
+</style>
