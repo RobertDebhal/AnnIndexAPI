@@ -27,15 +27,14 @@ export default {
   padding: 0 0 0 0.75%;
   margin: 0;
   overflow: hidden;
-  border: 1px solid #e7e7e7;
-  background: linear-gradient(to bottom left, #FFFFFF 0%, rgb(250,250,250) 100%);
+  background: linear-gradient(to top left, rgb(10, 12, 10) 0%, rgb(120, 124, 120) 100%);
   height: 55px;
 }
 
 .top a {
   float: left;
   display: block;
-  color: rgb(136,136,136);
+  color: white;
   text-align: center;
   padding: 10px 10px;
   height: 55px;

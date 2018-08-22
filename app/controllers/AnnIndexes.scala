@@ -26,7 +26,7 @@ class AnnIndexes @Inject()(annService: AnnService, cc: ControllerComponents)(imp
       result <- futureResults
     } yield {
       //grouping by tiefvision by brand and tophat
-      val map = result.filter(!_.contains("_")).groupBy(x => x.split("-")(0) + "-" + x.split("-")(1)) ++ Map(("generic-saks" -> result.filter(_.contains("_"))))
+      val map = result.filter(x => !x.contains("saks") && !x.contains("tophat")).groupBy(x => x.split("-")(0) + "-" + x.split("-")(1)) ++ Map(("generic-saks" -> result.filter(x => x.contains("saks") && x.contains("tophat"))))
       Ok(Json.toJson(map))
     }
   }

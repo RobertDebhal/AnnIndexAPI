@@ -26,11 +26,9 @@
                 <label for="index"> annoy index </label>
                 <select id="index" v-model="index" class="form-control">
                     <option value="">Please select one</option>
-                    <template v-for="indexList in indexes">
-                    <option v-for="index in indexList">
+                    <option v-for="index in indexes">
                         {{index}}
                     </option>
-                    </template>
                 </select>
             </div>
             <div class="col-md-3">
@@ -86,9 +84,7 @@
                  <label for="index_target"> annoy index </label>
                  <select id="index_target" v-model="index_target" class="form-control">
                      <option value="">Please select one</option>
-                     <template v-for="indexList in indexes">
-                     <option v-for="index in indexList"> {{index}} </option>
-                     </template>
+                     <option v-for="index in indexes"> {{index}} </option>
                  </select>
              </div>
              <div class="col-md-3">
@@ -211,7 +207,7 @@ export default {
     return {
         banner: 'gilt',
         model: '',
-        models: ['lightfm', 'lightfm_brand', 'tophat', 'tiefvision'],
+        models: [],
         indexes: [],
         index: '',
         index_target: '',
@@ -228,12 +224,12 @@ export default {
     }
   },
   methods: {
-    getModelIndexes: function() {
+    getModelIndexes: function(input) {
         let vm = this
         axios
             .get('/ann_indexes')
             .then(function(response) {
-                vm.indexes = response.data
+                vm.indexes = response.data[vm.model]
             })
     },
     getAnnoyVector: function() {
@@ -249,7 +245,6 @@ export default {
     },
     findNeighbors: function() {
         let vm = this
-        alert(vm.index_key)
         axios
             .post('/ann_indexes/' + vm.index.trim() + '/search', {
                 k: parseInt(vm.k),
@@ -259,7 +254,6 @@ export default {
             })
             .then(function(response) {
                 vm.neighbors = response.data
-                console.log(response.data)
                 if (vm.neighbor_type != '') {
                     vm.parseIdsFromNeighbors()
                 }
@@ -319,7 +313,6 @@ export default {
                 }
             })
             .then(function(response) {
-                console.log(response.data)
                 vm.neighbors_data = response.data
                 vm.show_raw_neighbors = false
             })
@@ -331,7 +324,7 @@ export default {
             this.indexes = []
             return
         } else {
-            this.getModelIndexes()
+            this.getModelIndexes(this.model)
         }
     },
     index_key: _.debounce(
@@ -357,11 +350,12 @@ export default {
     }
   },
   created: function () {
+
         let vm = this
         axios
             .get('/ann_indexes')
             .then(function(response) {
-                vm.indexes = response.data
+                vm.models = Object.keys(response.data);
             })
     },
   filters: {
