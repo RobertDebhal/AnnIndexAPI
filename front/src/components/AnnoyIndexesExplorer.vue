@@ -112,7 +112,7 @@
         </div>
 
         <div class="row">
-            <h1> Neighbors <i class="fa fa-eye" @click="show_raw_neighbors = !show_raw_neighbors" title="toggle on/off the raw results"> </i> </h1>
+            <h1> Neighbors <font-awesome-icon icon="eye" @click="show_raw_neighbors = !show_raw_neighbors" title="toggle on/off the raw results" /> </h1>
          </div>
 
         <div class="row" v-if="show_raw_neighbors">
@@ -188,7 +188,7 @@
         </div>
 
     </template>
-
+    <ProductLook v-if="false" productImage="https://image.s5a.com/is/image/saks/0400098537125" pdpUrl="" brand="saks" productName="shoes"/>
 </div>
 
 </template>
@@ -198,6 +198,7 @@ import qs from 'qs'
 import ProductLook from './ProductLook.vue'
 import UserIdentification from './UserIdentification.vue'
 import axios from 'axios'
+
 export default {
   name: "ann-indexes-explorer",
   components: {
@@ -246,7 +247,7 @@ export default {
     findNeighbors: function() {
         let vm = this
         axios
-            .post('/ann_indexes/' + vm.index.trim() + '/search', {
+            .post('/ann_indexes/' + vm.index_target.trim() + '/search', {
                 k: parseInt(vm.k),
                 search_k: -1,
                 ids: [{id:vm.index_key,ann_key_type: "StringAnnKey"}],

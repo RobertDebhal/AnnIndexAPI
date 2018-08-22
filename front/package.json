@@ -31,8 +31,13 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.2",
+    "@fortawesome/free-solid-svg-icons": "^5.2.0",
+    "@fortawesome/vue-fontawesome": "^0.1.1",
     "axios": "^0.18.0",
     "bootstrap": "^4.0.0-alpha.6",
+    "i": "^0.3.6",
+    "npm": "^6.4.0",
     "qs": "^6.5.2",
     "vue": "^2.3.2",
     "vue-router": "^3.0.1"

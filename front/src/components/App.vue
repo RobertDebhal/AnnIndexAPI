@@ -3,19 +3,20 @@
   <SideNav />
   <TopBar />
   <router-view></router-view>
-
   </div>
 </template>
 
 <script>
 import SideNav from './SideNav.vue'
 import TopBar from './TopBar.vue'
+import ProductLook from './ProductLook.vue'
 
 export default {
   name: 'App',
   components: {
     SideNav,
-    TopBar
+    TopBar,
+    ProductLook
   }
 }
 </script>
